@@ -1,6 +1,7 @@
 mod day1;
 mod day2;
 mod day3;
+mod day4;
 mod utils;
 
 fn main() {
@@ -27,4 +28,12 @@ fn main() {
     print!("Running day 3 problem 2: ");
     let result_day3_2 = day3::run2();
     println!("{}", result_day3_2);
+
+    print!("Running day 4 problem 1: ");
+    let result_day4_1 = day4::run1();
+    println!("{}", result_day4_1);
+
+    print!("Running day 4 problem 2: ");
+    let result_day4_2 = day4::run2();
+    println!("{}", result_day4_2);
 }
