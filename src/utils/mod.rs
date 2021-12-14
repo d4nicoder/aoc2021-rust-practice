@@ -1,7 +1,7 @@
 use std::fs;
 
 pub fn read_file(path: &str, keep_empty_lines: bool) -> Vec<String> {
-    let mut file = fs::read_to_string(path);
+    let file = fs::read_to_string(path);
     if file.is_err() {
         panic!("Could not read file {}", path);
     }
