@@ -1,20 +1,20 @@
 use std::collections::HashMap;
 
 struct BoardNumber {
+    board: usize,
     number: usize,
     row: usize,
     column: usize,
     checked: bool,
 }
 
-fn mark_number(boards: &Vec<Vec<Vec<BoardNumber>>>, num: &usize) {
-    for board in boards {
-        for row in board {
-            for number in row {
-                if number.number == *num {
-                    number.checked = true;
-                }
-            }
+fn mark_number(boards: &Vec<BoardNumber>, num: usize) {
+    println!("  - marking ({}) with num {}", boards.len(), num);
+    for (i, number) in boards.iter().enumerate() {
+        if number.number == num {
+            println!("    - FOUND!");
+            let mut num = boards.get(i).as_mut().unwrap();
+            num.checked = true;
         }
     }
 }
@@ -33,14 +33,12 @@ pub fn run1() -> usize {
         .collect();
     println!("{:?}", numbers);
 
-    let mut boards: &Vec<Vec<Vec<BoardNumber>>> = &Vec::new();
-
-    let mut actualBoard: Vec<Vec<BoardNumber>> = Vec::new();
+    let mut boards: Vec<BoardNumber> = Vec::new();
+    let mut boardIndex: usize = 0;
 
     for (r, line) in lines.iter().enumerate() {
         if r > 1 && line.len() == 0 {
-            boards.push(actualBoard);
-            actualBoard = Vec::new();
+            boardIndex += 1;
         } else if r > 1 {
             let numbers = line
                 .split(" ")
@@ -50,27 +48,28 @@ pub fn run1() -> usize {
             let mut row: Vec<BoardNumber> = Vec::new();
             for (c, num) in numbers.iter().enumerate() {
                 let boardNum = BoardNumber {
+                    board: boardIndex,
                     number: *num,
                     row: r,
                     column: c,
                     checked: false,
                 };
-                row.push(boardNum);
+                boards.push(boardNum);
             }
-            actualBoard.push(row);
         }
     }
+    let mut markedBoards: Vec<BoardNumber> = boards;
+    for num in numbers {
+        println!("Marking number: {}", num);
+        mark_number(&markedBoards, num);
+    }
 
-    let num: usize = 23;
-    mark_number(&boards, &num);
-    for board in boards.iter() {
-        println!("\nNew board");
-        for row in board.iter() {
-            for num in row.iter() {
-                print!("{}-{}", num.number, num.checked);
-            }
-            print!("\n");
-        }
+    println!("markedBoards size: {}", markedBoards.len());
+    for board in markedBoards.iter() {
+        println!(
+            "Board {}, row {}, column {}, number {}, checked {}",
+            board.board, board.row, board.column, board.number, board.checked
+        );
     }
     return 1;
 }
